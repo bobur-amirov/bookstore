@@ -14,6 +14,6 @@ def author(request):
 
 
 def lungauge(request):
-    lungauges = Language.objects.all()
+    lengauges = Language.objects.all()
 
-    return {'lungauges': lungauges}
+    return {'lengauges': lengauges}

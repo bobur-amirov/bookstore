@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 
 from .author import Author
@@ -19,3 +21,7 @@ class Book(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def price2(self):
+        return round(self.price - self.price * Decimal('0.2'), 2)
