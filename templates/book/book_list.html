@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li class="active">Products</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- ASIDE -->
+                {% include 'aside.html' %}
+                <!-- /ASIDE -->
+
+                <!-- MAIN -->
+                <div id="main" class="col-md-9">
+                    <!-- store top filter -->
+                    <div class="store-filter clearfix">
+                        <div class="pull-left">
+                            <div class="row-filter">
+                                <a href="#"><i class="fa fa-th-large"></i></a>
+                                <a href="#" class="active"><i class="fa fa-bars"></i></a>
+                            </div>
+                            <div class="sort-filter">
+                                <span class="text-uppercase">Sort By:</span>
+                                <form method="get">
+                                    {% csrf_token %}
+                                    <select class="input" name="ordering">
+                                        <option value="created">Date</option>
+                                        <option value="-created">- Date</option>
+                                        <option value="price">Price</option>
+                                        <option value="-price">- Price</option>
+                                    </select>
+                                    <button class="btn btn-danger" type="submit">Order by</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <div class="page-filter">
+                                <span class="text-uppercase">Show:</span>
+                                <select class="input">
+                                    <option value="0">10</option>
+                                    <option value="1">20</option>
+                                    <option value="2">30</option>
+                                </select>
+                            </div>
+                            <ul class="store-pages">
+                                <li><span class="text-uppercase">Page:</span></li>
+                                {% if books.has_previous %}
+                                    <li><a href="?page={{ books.previous_page_number }}"><i
+                                            class="fa fa-caret-left"></i></a></li>
+                                {% endif %}
+{#                                <li>first</li>#}
+                                <li class="active" ><a href="#">{{ books.number }}</a></li>
+{#                                <li><a href="#">last</a></li>#}
+                                {% if books.has_next %}
+                                    <li><a href="?page={{ books.next_page_number }}"><i
+                                            class="fa fa-caret-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /store top filter -->
+
+                    <!-- STORE -->
+                    <div id="store">
+                        <!-- row -->
+                        <div class="row">
+                            <!-- Product Single -->
+                            {% for book in books %}
+                                <div class="col-md-4 col-sm-6 col-xs-6">
+                                    <div class="product product-single">
+                                        <div class="product-thumb">
+                                            <div class="product-label">
+                                                <span>New</span>
+                                                <span class="sale">-20%</span>
+                                            </div>
+                                            <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick
+                                                view
+                                            </button>
+                                            <img src="{{ book.cover.url }}" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-price">{{ book.price2 }}
+                                                <del class="product-old-price">{{ book.price }}</del>
+                                            </h3>
+                                            <div class="product-rating">
+                                                {% for i in range %}
+                                                    {% if i <= book.rating_avg %}
+                                                        <i class="fa fa-star"></i>
+                                                    {% else %}
+                                                        <i class="fa fa-star-o empty"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <h2 class="product-name"><a
+                                                    href="{% url 'book_detail' book.slug %}">{{ book.name }}
+                                                by {{ book.authors }} </a></h2>
+                                            <div class="product-btns">
+                                                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                                <button class="main-btn icon-btn"><i class="fa fa-exchange"></i>
+                                                </button>
+                                                <button class="primary-btn add-to-cart"><i
+                                                        class="fa fa-shopping-cart"></i> Add to Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- /Product Single -->
+                        </div>
+                        <!-- /row -->
+                    </div>
+                    <!-- /STORE -->
+
+                    <!-- store bottom filter -->
+                    <div class="store-filter clearfix">
+                        <div class="pull-left">
+                            <div class="row-filter">
+                                <a href="#"><i class="fa fa-th-large"></i></a>
+                                <a href="#" class="active"><i class="fa fa-bars"></i></a>
+                            </div>
+                            <div class="sort-filter">
+                                <span class="text-uppercase">Sort By:</span>
+                                <select class="input">
+                                    <option value="0">Position</option>
+                                    <option value="0">Price</option>
+                                    <option value="0">Rating</option>
+                                </select>
+                                <a href="#" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></a>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <div class="page-filter">
+                                <span class="text-uppercase">Show:</span>
+                                <select class="input">
+                                    <option value="0">10</option>
+                                    <option value="1">20</option>
+                                    <option value="2">30</option>
+                                </select>
+                            </div>
+                            <ul class="store-pages">
+                                <li><span class="text-uppercase">Page:</span></li>
+                                {% if books.has_previous %}
+                                    <li><a href="?page={{ books.previous_page_number }}"><i
+                                            class="fa fa-caret-left"></i></a></li>
+                                {% endif %}
+                                <li class="active">1</li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                {% if books.has_next %}
+                                    <li><a href="?page={{ books.next_page_number }}"><i
+                                            class="fa fa-caret-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /store bottom filter -->
+                </div>
+                <!-- /MAIN -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock %}

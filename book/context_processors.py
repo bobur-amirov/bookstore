@@ -13,7 +13,7 @@ def author(request):
     return {'authors': authors}
 
 
-def lungauge(request):
-    lengauges = Language.objects.all()
+def langauge(request):
+    langauges = Language.objects.all()
 
-    return {'lengauges': lengauges}
+    return {'langauges': langauges}

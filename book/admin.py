@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, Category, Language, Author
+from .models import Book, Category, Language, Author, Image
 
 
 @admin.register(Category)
@@ -19,8 +19,11 @@ class LanguageAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
 
+class ImageInlineModel(admin.TabularInline):
+    model = Image
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [ImageInlineModel]
