@@ -77,12 +77,15 @@
                                     <span class="text-uppercase">QTY: </span>
                                     <input class="input" type="number">
                                 </div>
-                                <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart
-                                </button>
+                                <a href="{% url 'basket' book.slug %}" class="primary-btn add-to-cart">
+                                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                                </a>
                                 <div class="pull-right">
                                     {{ book.likes }}
-                                    <a href="{% url 'likes' book.slug %}" class="main-btn icon-btn"><i
-                                            class="fa fa-heart"></i></a>
+                                    <button class="main-btn icon-btn" name="{{ book.slug }}"
+                                            onClick="likeBtn(this.name)"
+                                    ><i class="fa fa-heart"></i>
+                                    </button>
                                     <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
                                     <button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
                                 </div>
@@ -109,10 +112,14 @@
                                                     <div class="single-review">
                                                         <div class="review-heading">
                                                             <div>
-                                                                <a href="#"><i class="fa fa-user-o"></i> {{ comment.user.username }} </a>
+                                                                <a href="#"><i
+                                                                        class="fa fa-user-o"></i> {{ comment.user.username }}
+                                                                </a>
                                                             </div>
                                                             <div>
-                                                                <a href="#"><i class="fa fa-clock-o"></i> {{ comment.created }}</a>
+                                                                <a href="#"><i
+                                                                        class="fa fa-clock-o"></i> {{ comment.created }}
+                                                                </a>
                                                             </div>
                                                             <div class="review-rating pull-right">
                                                                 {% for i in range %}
@@ -150,11 +157,16 @@
                                                     <div class="input-rating">
                                                         <strong class="text-uppercase">Your Rating: </strong>
                                                         <div class="stars">
-                                                            <input type="radio" id="star5" name="rating" value="5"/><label for="star5"></label>
-                                                            <input type="radio" id="star4" name="rating" value="4"/><label for="star4"></label>
-                                                            <input type="radio" id="star3" name="rating" value="3"/><label for="star3"></label>
-                                                            <input type="radio" id="star2" name="rating" value="2"/><label for="star2"></label>
-                                                            <input type="radio" id="star1" name="rating" value="1"/><label for="star1"></label>
+                                                            <input type="radio" id="star5" name="rating"
+                                                                   value="5"/><label for="star5"></label>
+                                                            <input type="radio" id="star4" name="rating"
+                                                                   value="4"/><label for="star4"></label>
+                                                            <input type="radio" id="star3" name="rating"
+                                                                   value="3"/><label for="star3"></label>
+                                                            <input type="radio" id="star2" name="rating"
+                                                                   value="2"/><label for="star2"></label>
+                                                            <input type="radio" id="star1" name="rating"
+                                                                   value="1"/><label for="star1"></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -192,31 +204,35 @@
 
                 <!-- Product Single -->
                 {% for bc in book_categories %}
-                <div class="col-md-3 col-sm-6 col-xs-6">
-                    <div class="product product-single">
-                        <div class="product-thumb">
-                            <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                            <img src="{{ bc.cover.url }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <h3 class="product-price">${{ bc.price2 }} <del class="product-old-price">{{ bc.price }}</del></h3>
-                            <div class="product-rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o empty"></i>
-                            </div>
-                            <h2 class="product-name"><a href="#">{{ bc.name }}</a></h2>
-                            <div class="product-btns">
-                                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart
+                    <div class="col-md-3 col-sm-6 col-xs-6">
+                        <div class="product product-single">
+                            <div class="product-thumb">
+                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view
                                 </button>
+                                <img src="{{ bc.cover.url }}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <h3 class="product-price">${{ bc.price2 }}
+                                    <del class="product-old-price">{{ bc.price }}</del>
+                                </h3>
+                                <div class="product-rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o empty"></i>
+                                </div>
+                                <h2 class="product-name"><a href="#">{{ bc.name }}</a></h2>
+                                <div class="product-btns">
+                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to
+                                        Cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
                 <!-- /Product Single -->
 
@@ -227,5 +243,30 @@
     </div>
     <!-- /section -->
 
-{% endblock %}
 
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        window.CSRF_TOKEN = "{{ csrf_token }}"
+
+        function likeBtn(slug) {
+            {#th.classList.toggle("likecl");#}
+            console.log(slug);
+            $.ajax({
+                type: 'POST',
+                url: '{% url "likes" %}',
+                data: {
+                    post: slug,
+                    csrfmiddlewaretoken: window.CSRF_TOKEN
+                },
+                success: function () {
+                    console.log('hi')
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

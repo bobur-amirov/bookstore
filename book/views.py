@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
-
+from django.http import HttpResponse
 from book.models import Book, Category, Author, Language
 from comment.forms import CommentForm
 from comment.models import Comment, Like
@@ -65,7 +65,8 @@ def book_detail(request, slug):
     return render(request, 'book/book_detail.html', context)
 
 
-def likes(request, slug):
+def likes(request):
+    slug = request.POST.get('post')
     user = request.user
     book = Book.objects.get(slug=slug)
     current_like = book.likes

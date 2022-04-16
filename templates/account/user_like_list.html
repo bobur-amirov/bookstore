@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>My like books</h1>
+    {% for like in likes %}
+        <p>{{ like.book.name }}</p>
+        <hr>
+    {% endfor %}
+{% endblock %}
