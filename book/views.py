@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
 from book.models import Book, Category, Author, Language
 from comment.forms import CommentForm
 from comment.models import Comment, Like
@@ -46,12 +47,13 @@ def book_detail(request, slug):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            form_comment = form.save(commit=False)
-            form_comment.book = book
-            form_comment.user = request.user
-            form_comment.rating = int(request.POST['rating'])
-            form_comment.save()
-            return redirect('book_detail', slug=book.slug)
+            text = form.cleaned_data['text']
+            rating = int(request.POST.get('rating'))
+            com = Comment(book=book, user=request.user, text=text, rating=rating)
+            com.save()
+            return JsonResponse({'comment': model_to_dict(com)}, status=200)
+        else:
+            return redirect('book_detail', book.slug)
     else:
         form = CommentForm()
 
@@ -66,25 +68,24 @@ def book_detail(request, slug):
 
 
 def likes(request):
-    slug = request.POST.get('post')
-    user = request.user
-    book = Book.objects.get(slug=slug)
-    current_like = book.likes
+    if request.POST.get('action') == 'post':
+        slug = request.POST.get('book_slug')
+        user = request.user
+        book = Book.objects.get(slug=slug)
+        current_like = book.likes
+        liked = Like.objects.filter(user=user, book=book).count()
 
-    liked = Like.objects.filter(user=user, book=book).count()
+        if not liked:
+            Like.objects.create(user=user, book=book)
+            current_like += 1
+        else:
+            like = Like.objects.filter(user=user, book=book)
+            like.delete()
+            current_like -= 1
+        book.likes = current_like
+        book.save()
 
-    if not liked:
-        like = Like.objects.create(user=user, book=book)
-        # like.save()
-        current_like += 1
-    else:
-        like = Like.objects.filter(user=user, book=book)
-        like.delete()
-        current_like -= 1
-    book.likes = current_like
-    book.save()
-
-    return redirect('book_detail', book.slug)
+        return JsonResponse({'book_likes': current_like, })
 
 
 def category_books(request, slug):

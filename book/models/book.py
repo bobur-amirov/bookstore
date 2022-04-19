@@ -19,7 +19,7 @@ class Book(models.Model):
     language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True)
     authors = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
     views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
     rating_avg = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
     def __str__(self):
