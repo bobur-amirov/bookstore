@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% for basket in baskets %}
+        <p>{{ basket.book.name }}</p>
+        <p>{{ basket.book.authors }}</p>
+        <p>{{ basket.status }}</p>
+        <p>{{ basket.user.username }}</p>
+        <hr>
+    {% endfor %}
+{% endblock %}
